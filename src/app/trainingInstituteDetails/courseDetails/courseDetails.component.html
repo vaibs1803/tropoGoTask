@@ -1,0 +1,198 @@
+<div class="card">
+    <div class="card-header">
+      Add Course Details
+    </div>
+  
+    <div class="card-body">
+      <form novalidate
+            (ngSubmit)="save()"
+            [formGroup]="courseDetailForm">
+            <h1>Course</h1>
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="courseNameId">Course Name</label>
+          <div class="col-md-4">
+            <input class="form-control"
+                   id="courseNameId"
+                   type="text"
+                   placeholder="Course Name (required)"
+                   formControlName="courseName"
+                   [ngClass]="{'is-invalid': (courseDetailForm.get('courseName').touched ||
+                                              courseDetailForm.get('courseName').dirty) &&
+                                              !courseDetailForm.get('courseName').valid }" />
+            <span class="invalid-feedback">
+              <span *ngIf="courseDetailForm.get('courseName').errors?.required">
+                Please enter course name.
+              </span>
+              <span *ngIf="courseDetailForm.get('courseName').errors?.minlength">
+                The course name must be longer than 3 characters.
+              </span>
+            </span>
+          </div>
+        </div>
+  
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label pt-0">Aircraft Type</label>
+          <div class="col-md-4">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input"
+                       type="radio"
+                       value="multirotar"
+                       formControlName="aircraftType">Multi Rotar
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input"
+                       type="radio"
+                       value="fixedwing"
+                       formControlName="aircraftType">Fixed Wing
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-header">
+            <div class="row mb-2">
+                <label class="col-md-2 col-form-label">Batch</label>
+                <label class="col-md-2 col-form-label">Start Date</label>
+                <label class="col-md-2 col-form-label">End Date</label>
+            </div>
+        </div>
+        <div *ngIf="true">
+          <div formArrayName="batches">
+  
+            <section [formGroupName]="i"
+                 *ngFor="let batch of batches.controls; let i=index">
+                <button type="button" class="btn btn-danger btn-sm" style="position: absolute; right: 0;" (click)="removeBatch(i)">Remove</button>
+              <div class="form-group row mb-2">
+                <div class="col-md-2">{{'Batch '+i+1}}</div>
+                <div class="col-md-2">
+                      <input class="form-control"
+                             id="{{'startdateId' + i}}"
+                             type="date"
+                             placeholder="dd/mm/yy"
+                             formControlName="startdate">
+                </div>
+                <div class="col-md-2">
+                    <input class="form-control"
+                           id="{{'enddateId' + i}}"
+                           type="date"
+                           placeholder="dd/mm/yy"
+                           formControlName="enddate">
+                </div>
+              </div>
+  
+              <div class="form-group row mb-2">
+                <div class="col-md-2"></div>
+                <label class="col-md-2 col-form-label"
+                       attr.for="{{'courseLocId' + i}}">Course Location</label>
+                <div class="col-md-3">
+                    <select class="form-control"
+                          id="{{'courseLocId' + i}}"
+                          formControlName="courseLocation">
+                          <option value=""
+                            disabled
+                            selected
+                            hidden>Select...</option>
+                          <option *ngFor="let item of locations" [value]="item.Code" >
+                            {{item.Name}}
+                          </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row mb-2">
+                <div class="col-md-2"></div>
+                <label class="col-md-2 col-form-label"
+                       attr.for="{{'courseLangId' + i}}">Course Language</label>
+                <div class="col-md-2">
+                  <select class="form-control"
+                          id="{{'courseLangId' + i}}"
+                          formControlName="courseLanguage">
+                    <option value=""
+                            disabled
+                            selected
+                            hidden>Select...</option>
+                    <option *ngFor="let item of languages" [value]="item.Code" >
+                                {{item.Name}}
+                              </option>
+                  </select>
+                </div>
+                <label class="col-md-2 col-form-label"
+                       attr.for="{{'courseCostId' + i}}">Course Cost(Ex GST)</label>
+                <div class="col-md-2">
+                  <input class="form-control"
+                         id="{{'courseCostId' + i}}"
+                         type="number"
+                         placeholder="0"
+                         formControlName="courseCost">
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-md-2"></div>
+                <label class="col-md-2 col-form-label pt-0">Is this a weekend course?</label>
+                <div class="col-md-4">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input class="form-check-input"
+                             type="radio"
+                             value="yes"
+                             formControlName="isWeekendCourse">Yes
+                    </label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input class="form-check-input"
+                             type="radio"
+                             value="no"
+                             formControlName="isWeekendCourse">No
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+  
+          <div class="form-group row mb-2">
+            <div class="col-md-4">
+              <button class="btn btn-outline-primary"
+                      type="button"
+                      [title]="batches.valid ? 'Add another course' : 'Disabled until the existing batch data is valid'"
+                      [disabled]="!batches.valid"
+                      (click)="addBatches()">
+                Add Another Course
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row mb-2">
+            <label class="col-md-2 col-form-label"
+                   for="courseDetailId">Course Detail</label>
+            <div class="col-md-4">
+              <textarea rows="5" cols="46" class="form-control"
+                     id="courseDetailId"
+                     placeholder="Course Detail"
+                     formControlName="courseDetail"></textarea>
+            </div>
+          </div>
+  
+        <div class="form-group row mb-2">
+          <div class="offset-md-2 col-md-4">
+            <button class="btn btn-primary mr-3"
+                    type="button"
+                    style="background-color: #4CAF50;width:80px"
+                    (click)="backClick()">
+              Back
+            </button>
+            <button class="btn btn-primary mr-6"
+                    type="submit"
+                    style="background-color: #4CAF50;width:80px">
+              Save and Publish
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
