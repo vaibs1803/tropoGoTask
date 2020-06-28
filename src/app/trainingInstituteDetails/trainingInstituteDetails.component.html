@@ -1,0 +1,116 @@
+<div *ngIf="showInstituteDetail" class="card">
+    <div class="card-header">
+      Training Institute Details
+    </div>
+  
+    <div class="card-body">
+      <form novalidate
+            (ngSubmit)="nextClick()"
+            [formGroup]="instituteForm">
+
+            <div class="form-group row mb-2">
+                <label class="col-md-2 col-form-label" for="file">INSTITUTE LOGO</label>
+            </div>
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    <img [src]="imageSrc" *ngIf="imageSrc" style="height: 100px; width:100px">
+                </div>
+                <div class="col-md-4">
+                <input 
+                    formControlName="file"
+                    id="file" 
+                    type="file" 
+                    class="form-control"
+                    (change)="onFileChange($event)">
+            </div>
+            </div>
+  
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="instituteNameId">NAME OF INSTITUTE</label>
+          <div class="col-md-8">
+            <input class="form-control"
+                   id="instituteNameId"
+                   type="text"
+                   placeholder="Indian Institute of Drones"
+                   formControlName="instituteName"
+                   [ngClass]="{'is-invalid': (instituteForm.get('instituteName').touched ||
+                                              instituteForm.get('instituteName').dirty) &&
+                                              !instituteForm.get('instituteName').valid }" />
+            <span class="invalid-feedback">
+              <span *ngIf="instituteForm.get('instituteName').errors?.required">
+                Please enter your institute name.
+              </span>
+            </span>
+          </div>
+        </div>
+
+  
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label"
+                 for="instituteBroucherId">INSTITUTE BROCHURE(Optional)</label>
+          <div class="col-md-4">
+            <input class="form-control" multiple
+                   id="instituteBroucherId"
+                   type="file"
+                   placeholder="INSTITUTE BROCHURE"
+                   formControlName="instituteBroucher"
+                   (change)="onInstituteBroucherChange($event)"
+                   [ngClass]="{'is-invalid': !instituteForm.get('instituteBroucher').valid }" />
+          </div>
+          <div *ngFor="let selected of ArrayOfSelectedFile[0];let i = index">
+            <h3>{{selected.name}}</h3>
+            <!-- <button (click)="removeSelectedFile(i)">delete</button> -->
+          </div>
+        </div>
+
+        <div class="form-group row mb-2">
+            <label class="col-md-2 col-form-label"
+                   for="certificationsId">CERTIFICATIONS(Optional)</label>
+            <div class="col-md-4">
+              <input class="form-control"
+                     id="certificationsId"
+                     type="file"
+                     placeholder="CERTIFICATIONS"
+                     formControlName="certifications"
+                     [ngClass]="{'is-invalid': !instituteForm.get('certifications').valid }" />
+            </div>
+        </div>
+
+        <div class="form-group row mb-2">
+            <label class="col-md-2 col-form-label"
+                   for="instituteGalleryId">INSTITUTE / COURSE GALLERY</label>
+            <div class="col-md-4">
+              <input class="form-control"
+                     id="instituteGalleryId"
+                     type="file"
+                     placeholder="INSTITUTE BROCHURE"
+                     formControlName="instituteGallery"
+                     [ngClass]="{'is-invalid': (instituteForm.get('instituteName').touched ||
+                     instituteForm.get('instituteName').dirty)}" />
+              <span class="invalid-feedback">
+                <span *ngIf="instituteForm.get('instituteGallery').errors?.required">
+                  Please add some GALLERY.
+                </span>
+              </span>
+            </div>
+        </div>
+  
+        <div class="form-group row mb-2">
+          <div class="offset-md-2 col-md-4">
+            <button class="btn btn-primary mr-3"
+                    type="button"
+                    style="background-color: #4CAF50;width:80px">
+              Skip
+            </button>
+            <button class="btn btn-primary mr-3"
+                    type="submit"
+                    style="background-color: #4CAF50;width:80px">
+              Next
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <course-details *ngIf="showCustomerDetail"></course-details>
